@@ -35,7 +35,30 @@ if (swipeBehavior.mount.isAvailable()) {
     }
 }
 
-const tg = window.Telegram?.WebApp;
-tg.ready()
-tg?.expand();
-tg?.requestFullscreen();
+async function initTelegramWebApp() {
+    const tg = window.Telegram?.WebApp;
+    
+    if (!tg) {
+        console.warn('Telegram WebApp не доступен');
+        return;
+    }
+    
+    try {
+        await tg.ready();
+        
+        tg.expand();
+        
+        const platform = await window.Telegram.WebApp.platform;
+        if (platform === "android" || platform === "ios") {
+            if (viewport.requestFullscreen.isAvailable()) {
+                await viewport.requestFullscreen();
+            } else {
+                tg.requestFullscreen();
+            }
+        }
+    } catch (error) {
+        console.error('Ошибка при инициализации Telegram WebApp:', error);
+    }
+}
+
+initTelegramWebApp();
