@@ -1,3 +1,7 @@
+/**
+ * Инициализирует viewport для Telegram Mini Apps
+ * Настраивает отображение приложения в Telegram
+ */
 async function initViewport() {
     try {
         const viewport = window.TelegramApps?.viewport;
@@ -6,16 +10,20 @@ async function initViewport() {
             return;
         }
         
+        // Монтирование viewport если доступно
         if (viewport.mount.isAvailable()) {
             viewport.mount();
+            // Привязка CSS-переменных для адаптивного дизайна
             if (viewport.bindCssVars.isAvailable()) {
                 viewport.bindCssVars();
             }
 
+            // Расширение viewport до максимального размера
             if (viewport.expand.isAvailable()) {
                 viewport.expand();
             }
 
+            // Запрос полноэкранного режима для мобильных устройств
             if (viewport.requestFullscreen.isAvailable()) {
                 const tg = window.Telegram;
                 if (tg && tg.isAvailable && tg.isAvailable()) {
@@ -31,7 +39,10 @@ async function initViewport() {
     }
 }
 
-// Инициализация swipeBehavior
+/**
+ * Инициализирует поведение свайпов в приложении
+ * Управляет вертикальными свайпами для навигации
+ */
 async function initSwipeBehavior() {
     try {
         const swipeBehavior = window.TelegramApps?.swipeBehavior;
@@ -40,13 +51,17 @@ async function initSwipeBehavior() {
             return;
         }
         
+        // Монтирование обработчика свайпов
         if (swipeBehavior.mount.isAvailable()) {
             swipeBehavior.mount();
             
+            // Включение вертикальных свайпов
             if (swipeBehavior.enableVertical.isAvailable()) {
                 swipeBehavior.enableVertical();
             }
               
+            // Отключение вертикальных свайпов
+            // Примечание: обычно используется только одно из действий - enable или disable
             if (swipeBehavior.disableVertical.isAvailable()) {
                 swipeBehavior.disableVertical();
             }
@@ -56,7 +71,10 @@ async function initSwipeBehavior() {
     }
 }
 
-// Упрощенная версия без использования SDK
+/**
+ * Альтернативная инициализация через стандартное Telegram WebApp API
+ * Используется, когда TelegramApps SDK недоступен
+ */
 async function initTelegramWebApp() {
     try {
         const tg = window.Telegram?.WebApp;
@@ -72,7 +90,7 @@ async function initTelegramWebApp() {
         await tg.ready();
         console.log('WebApp готов');
         
-        // Расширяем окно
+        // Расширяем окно до максимального размера
         tg.expand();
         console.log('Окно расширено');
         
@@ -96,16 +114,6 @@ async function initTelegramWebApp() {
 // Запускаем инициализацию при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Страница загружена, начинаем инициализацию...');
-    initTelegramWebApp();
+    initViewport();
+    initSwipeBehavior();
 });
-
-// Также запускаем инициализацию сразу (как запасной вариант)
-(async () => {
-    try {
-        console.log('Запуск инициализации...');
-        await initTelegramWebApp();
-        console.log('Инициализация завершена');
-    } catch (error) {
-        console.error('Ошибка при инициализации:', error);
-    }
-})();
