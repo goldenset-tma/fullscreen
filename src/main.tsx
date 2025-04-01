@@ -36,3 +36,12 @@ if (swipeBehavior.mount.isAvailable()) {
         swipeBehavior.disableVertical();
     }
 }
+
+const tg = (window as any).Telegram?.WebApp;
+tg.ready()
+tg?.expand();
+var platform = tg.platform;
+if (platform == "android" || platform == "ios") {  
+    tg?.requestFullscreen();
+    tg?.disableVerticalSwipes();
+}
