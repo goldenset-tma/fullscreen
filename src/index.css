@@ -1,0 +1,21 @@
+
+body {
+    background-color: var(--tg-theme-bg-color, #000000);
+    height: 100vh;
+
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.root {
+    height: calc(100% - var(--tg-safe-area-inset-top, 0px) - var(--tg-content-safe-area-inset-top, 0px) - var(--tg-safe-area-inset-bottom, 0px));
+
+    margin-top: calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px));
+    margin-right: var(--tg-safe-area-inset-right, 0px);
+    margin-bottom: var(--tg-safe-area-inset-bottom, 0px);
+    margin-left: var(--tg-safe-area-inset-left, 0px);
+    background-color: #FF0000;
+}
