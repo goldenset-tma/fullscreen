@@ -1,5 +1,4 @@
 import "./index.css";
-import "@mdi/font/css/materialdesignicons.min.css";
 import { viewport } from '@telegram-apps/sdk';
 import { swipeBehavior } from '@telegram-apps/sdk';
 
@@ -35,3 +34,8 @@ if (swipeBehavior.mount.isAvailable()) {
         swipeBehavior.disableVertical();
     }
 }
+
+const tg = window.Telegram?.WebApp;
+tg.ready()
+tg?.expand();
+tg?.requestFullscreen();
