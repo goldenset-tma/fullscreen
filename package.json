@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "@telegram-apps/sdk": "^3.6.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "deploy": "gh-pages -d dist"
   }
 }

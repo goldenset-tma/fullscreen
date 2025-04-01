@@ -3,7 +3,6 @@ import "@mdi/font/css/materialdesignicons.min.css";
 import { viewport } from '@telegram-apps/sdk';
 import { swipeBehavior } from '@telegram-apps/sdk';
 
-
 if (viewport.mount.isAvailable()) {
     viewport.mount();
     if (viewport.bindCssVars.isAvailable()) {
@@ -15,7 +14,7 @@ if (viewport.mount.isAvailable()) {
     }
 
     if (viewport.requestFullscreen.isAvailable()) {
-        const tg = (window as any).Telegram;
+        const tg = window.Telegram;
         if (tg.isAvailable()) {
             const platform = await tg.WebApp.platform;
             if (platform == "android" || platform == "ios") {
@@ -35,13 +34,4 @@ if (swipeBehavior.mount.isAvailable()) {
     if (swipeBehavior.disableVertical.isAvailable()) {
         swipeBehavior.disableVertical();
     }
-}
-
-const tg = (window as any).Telegram?.WebApp;
-tg.ready()
-tg?.expand();
-var platform = tg.platform;
-if (platform == "android" || platform == "ios") {  
-    tg?.requestFullscreen();
-    tg?.disableVerticalSwipes();
 }
