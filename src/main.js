@@ -56,30 +56,56 @@ async function initSwipeBehavior() {
     }
 }
 
+// Упрощенная версия без использования SDK
 async function initTelegramWebApp() {
-    const tg = window.Telegram?.WebApp;
-    
-    if (!tg) {
-        console.warn('Telegram WebApp не доступен');
-        return;
-    }
-    
     try {
+        const tg = window.Telegram?.WebApp;
+        
+        if (!tg) {
+            console.warn('Telegram WebApp не доступен');
+            return;
+        }
+        
+        console.log('Инициализация Telegram WebApp...');
+        
+        // Дожидаемся готовности WebApp
         await tg.ready();
+        console.log('WebApp готов');
         
+        // Расширяем окно
         tg.expand();
+        console.log('Окно расширено');
         
-        const platform = await window.Telegram.WebApp.platform;
-        if (platform === "android" || platform === "ios") {
-            if (viewport.requestFullscreen.isAvailable()) {
-                await viewport.requestFullscreen();
-            } else {
+        // Запрашиваем полноэкранный режим на мобильных устройствах
+        try {
+            const platform = await tg.platform;
+            console.log('Платформа:', platform);
+            
+            if (platform === "android" || platform === "ios") {
                 tg.requestFullscreen();
+                console.log('Запрошен полноэкранный режим');
             }
+        } catch (error) {
+            console.error('Ошибка при запросе полноэкранного режима:', error);
         }
     } catch (error) {
         console.error('Ошибка при инициализации Telegram WebApp:', error);
     }
 }
 
-initTelegramWebApp();
+// Запускаем инициализацию при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Страница загружена, начинаем инициализацию...');
+    initTelegramWebApp();
+});
+
+// Также запускаем инициализацию сразу (как запасной вариант)
+(async () => {
+    try {
+        console.log('Запуск инициализации...');
+        await initTelegramWebApp();
+        console.log('Инициализация завершена');
+    } catch (error) {
+        console.error('Ошибка при инициализации:', error);
+    }
+})();
